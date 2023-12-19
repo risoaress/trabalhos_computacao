@@ -71,33 +71,8 @@ agenda = [("Fulano", 99999999, "Rua A", "UFF"), ("Ciclano", 88888888, "Rua B", "
 escrever_contatos :: FilePath -> [Contato] -> IO ()
 escrever_contatos arquivo contatos = writeFile arquivo (unlines $ map formatar_contato contatos)
   where
-    formatar_contato (nome, idade, telefone, email) =
-      nome ++ "," ++ show idade ++ "," ++ telefone ++ "," ++ email
-
-
-ler_contatos :: FilePath -> IO [Contato]
-ler_contatos arquivo = do
-  conteudo <- readFile arquivo
-  return $ map parseContato $ lines conteudo
-  where
-    parseContato linha = case splitOn "," linha of
-      [nome, telStr, endereco, instituicao] ->
-        (nome, read telStr, endereco, instituicao)
-      _ -> error "Formato de contato inválido"
-  
-      
-splitOn :: String -> String -> [String]
-splitOn delimiter = unfoldr (split delimiter)
-  where
-    split :: String -> String -> Maybe (String, String)
-    split _ [] = Nothing
-    split delim str = Just (break (== head delim) str)
-
-
-unfoldr :: (b -> Maybe (a, b)) -> b -> [a]
-unfoldr f x = case f x of
-  Nothing -> []
-  Just (y, z) -> y : unfoldr f z
+    formatar_contato (nome, telefone, endereco, relacao) =
+      nome ++ "," ++ show telefone ++ "," ++ endereco ++ "," ++ relacao
 
 
 main::IO()
